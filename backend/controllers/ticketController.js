@@ -249,7 +249,7 @@ export async function updateTicket(req, res) {
       if (assigned_to !== undefined) {
         if (assigned_to !== null) {
           const [agent] = await pool.query(
-            'SELECT id FROM users WHERE id = ? AND role = "agent"',
+            "SELECT id FROM users WHERE id = ? AND role = 'agent'",
             [assigned_to]
           );
 
