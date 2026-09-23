@@ -2,7 +2,14 @@
 
 A full-stack support portal for customers and support agents, built for the Junior Full Stack Developer Technical Assessment.
 
-## Stack
+## Live Demo
+
+* **Frontend:** https://support-ticket-system-rose.vercel.app/
+* **Backend:** https://support-ticket-system-90a8.onrender.com
+* **Backend Health Check:** https://support-ticket-system-90a8.onrender.com/api/health
+* **GitHub Repository:** https://github.com/AJAY-SRIRAMULA/support-ticket-system
+
+## Tech Stack
 
 * React + Vite
 * Node.js + Express
@@ -12,6 +19,10 @@ A full-stack support portal for customers and support agents, built for the Juni
 * Axios
 * Jest + Supertest
 * Postman
+* Git + GitHub
+* Vercel
+* Render
+* Aiven MySQL
 
 ## Features
 
@@ -32,32 +43,56 @@ A full-stack support portal for customers and support agents, built for the Juni
 * View all tickets
 * Search and filter tickets
 * View ticket details and comments
-* Update status and priority
+* Update ticket status and priority
 * Assign tickets to an agent
-* Add responses
+* Add responses/comments
 
-## 1. Database Setup
+## Database
+
+The application uses MySQL with three main tables:
+
+* `users`
+* `tickets`
+* `ticket_comments`
+
+The database includes:
+
+* Primary keys
+* Foreign keys
+* One-to-many relationships
+* Indexes
+* Cascading relationships
+* Parameterized SQL queries
+
+### Database Setup
 
 Open MySQL Workbench and run:
 
-```sql
+```text
 database/schema.sql
 ```
 
 Then run:
 
-```sql
+```text
 database/seed.sql
 ```
 
-The seed creates these demo accounts:
+The seed creates demo accounts:
 
-* `customer@example.com` / `Password123`
-* `agent@example.com` / `Password123`
+```text
+Customer:
+customer@example.com
+Password123
 
-These are demo credentials only. Do not use them in production.
+Agent:
+agent@example.com
+Password123
+```
 
-## 2. Backend Setup
+These credentials are for assessment/demo purposes only.
+
+## Backend Setup
 
 Open a terminal:
 
@@ -72,9 +107,7 @@ Create:
 backend/.env
 ```
 
-Add your local MySQL configuration and a private JWT secret.
-
-Example:
+Add your local MySQL configuration and a private JWT secret:
 
 ```env
 PORT=5000
@@ -96,7 +129,7 @@ Start the backend:
 npm run dev
 ```
 
-API:
+The local API runs at:
 
 ```text
 http://localhost:5000
@@ -108,7 +141,7 @@ Health check:
 http://localhost:5000/api/health
 ```
 
-## 3. Frontend Setup
+## Frontend Setup
 
 Open another terminal:
 
@@ -141,7 +174,7 @@ Open the URL printed by Vite, normally:
 http://localhost:5173
 ```
 
-## 4. Automated Tests
+## Automated Tests
 
 From the `backend` directory:
 
@@ -162,15 +195,13 @@ The project includes 8 Jest + Supertest API tests covering:
 
 All 8 tests pass.
 
-## 5. Postman
+## Postman
 
-Import:
+Import the following collection into Postman:
 
 ```text
 postman/support-ticket-system.json
 ```
-
-into Postman.
 
 The collection contains 17 requests covering:
 
@@ -190,47 +221,114 @@ The collection contains 17 requests covering:
 * Invalid input
 * Not-found handling
 
-Set the collection variables for the base URL and authentication tokens as required.
+The collection can be configured with the deployed API base URL and authentication tokens.
 
-## 6. Security
+## Security
 
-* Passwords are hashed with bcrypt.
-* JWTs protect backend APIs.
+* Passwords are hashed using bcrypt.
+* JWTs protect authenticated backend APIs.
 * Customer ticket ownership is checked server-side.
-* Agent-only APIs are protected by role-based authorization.
+* Role-based authorization protects agent-only functionality.
 * SQL queries use parameterized placeholders.
 * Secrets are stored in environment variables.
 * `.env` files are excluded from Git.
-* CORS is configured through `CLIENT_URL`.
+* CORS is configured using the `CLIENT_URL` environment variable.
+* Customers cannot access another customer's tickets.
+* Unauthorized requests return appropriate HTTP status codes.
 
-## 7. Deployment Checklist
+## Deployment
 
-Before final deployment:
+The application is deployed using:
 
-1. Provision a managed MySQL database.
-2. Set backend environment variables securely.
-3. Set frontend `VITE_API_URL` to the deployed API URL.
-4. Deploy the backend.
-5. Deploy the frontend.
-6. Run the database schema on the remote MySQL database.
-7. Seed only the required demo data.
-8. Verify authentication and authorization.
-9. Verify ticket ownership restrictions.
-10. Verify comments, ticket updates and API errors.
-11. Add the live frontend URL, backend URL and GitHub repository URL to the submission.
+* **Frontend:** Vercel
+* **Backend:** Render
+* **Database:** Aiven MySQL
 
-## Required REST API Endpoints
+### Live URLs
 
-* POST `/api/auth/register`
-* POST `/api/auth/login`
-* GET `/api/tickets`
-* POST `/api/tickets`
-* GET `/api/tickets/:id`
-* PUT `/api/tickets/:id`
-* DELETE `/api/tickets/:id`
-* GET `/api/tickets/:id/comments`
-* POST `/api/tickets/:id/comments`
-* GET `/api/users`
+**Frontend**
+
+https://support-ticket-system-rose.vercel.app/
+
+**Backend**
+
+https://support-ticket-system-90a8.onrender.com
+
+**Health Check**
+
+https://support-ticket-system-90a8.onrender.com/api/health
+
+**GitHub**
+
+https://github.com/AJAY-SRIRAMULA/support-ticket-system
+
+### Deployment Verification
+
+The following production flows have been verified:
+
+* Customer registration and login
+* Agent login
+* Customer ticket creation
+* Customer ticket ownership
+* Agent ticket management
+* Ticket status updates
+* Ticket priority updates
+* Agent assignment
+* Ticket comments
+* JWT authentication
+* Role-based authorization
+* MySQL cloud database connection
+* Frontend-to-backend API communication
+* CORS configuration
+* API error handling
+
+## REST API Endpoints
+
+### Authentication
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+### Tickets
+
+```text
+GET    /api/tickets
+POST   /api/tickets
+GET    /api/tickets/:id
+PUT    /api/tickets/:id
+DELETE /api/tickets/:id
+```
+
+### Comments
+
+```text
+GET  /api/tickets/:id/comments
+POST /api/tickets/:id/comments
+```
+
+### Users
+
+```text
+GET /api/users
+```
+
+### Health Check
+
+```text
+GET /api/health
+```
+
+## SQL Example
+
+The project includes a SQL query demonstrating a JOIN between tickets and customers:
+
+```text
+database/open_tickets_query.sql
+```
+
+The query retrieves open and in-progress tickets along with customer name and email.
 
 ## Project Structure
 
@@ -238,10 +336,56 @@ Before final deployment:
 support-ticket-system/
 
 ├── backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── routes/
+│   ├── tests/
+│   ├── db.js
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+│
 ├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── .env
+│
 ├── database/
+│   ├── schema.sql
+│   ├── seed.sql
+│   └── open_tickets_query.sql
+│
 ├── postman/
+│   └── support-ticket-system.json
+│
 ├── .env.example
 ├── .gitignore
 └── README.md
 ```
+
+## Demo Credentials
+
+### Customer
+
+```text
+Email: customer@example.com
+Password: Password123
+Role: Customer
+```
+
+### Support Agent
+
+```text
+Email: agent@example.com
+Password: Password123
+Role: Agent
+```
+
+These credentials are provided only for assessment/demo purposes.
+
+## GitHub
+
+The complete source code, database scripts, Postman collection, tests and documentation are available in the GitHub repository:
+
+https://github.com/AJAY-SRIRAMULA/support-ticket-system
