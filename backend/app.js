@@ -1,0 +1,15 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import authRoutes from './routes/auth.js';
+import ticketRoutes from './routes/tickets.js';
+import userRoutes from './routes/users.js';
+dotenv.config();
+const app=express();
+app.use(cors({origin:process.env.CLIENT_URL||'http://localhost:5173'}));
+app.use(express.json());
+app.get('/api/health',(req,res)=>res.json({status:'ok'}));
+app.use('/api/auth',authRoutes); app.use('/api/tickets',ticketRoutes); app.use('/api/users',userRoutes);
+app.use((req,res)=>res.status(404).json({message:'Route not found'}));
+app.use((err,req,res,next)=>{console.error(err);res.status(500).json({message:'Internal server error'});});
+export default app;

@@ -1,0 +1,2 @@
+import {Link,useNavigate} from 'react-router-dom';import {useAuth} from '../context/AuthContext';
+export default function Layout({children}){const {user,logout}=useAuth();const navigate=useNavigate();return <><header><div className="brand">SupportDesk</div><nav><Link to="/dashboard">Dashboard</Link>{user?.role==='customer'&&<Link to="/tickets/new">New Ticket</Link>}<span className="user">{user?.name} · {user?.role}</span><button onClick={()=>{logout();navigate('/login')}}>Logout</button></nav></header><main>{children}</main></>}
